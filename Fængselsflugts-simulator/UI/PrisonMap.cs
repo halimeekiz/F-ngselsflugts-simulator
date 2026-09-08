@@ -1,4 +1,4 @@
-﻿namespace Fængselsflugts_simulator
+﻿namespace Fængselsflugts_simulator.UI
 {
 	internal class PrisonMap
 	{
