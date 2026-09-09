@@ -25,5 +25,11 @@ namespace Fængselsflugts_simulator.Models.Prisoners
 		{
 			Console.WriteLine($"{Name} hacker et simpelt elektronisk låsesystem.");
 		}
+
+		public EscapeArtist()
+		{
+			PowerLevel = 70;
+			IsAvailable = true;
+		}
 	}
 }

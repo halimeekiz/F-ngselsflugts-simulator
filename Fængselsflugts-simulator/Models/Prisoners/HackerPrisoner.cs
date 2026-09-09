@@ -16,5 +16,11 @@ namespace Fængselsflugts_simulator.Models.Prisoners
 		{
 			Console.WriteLine($"{Name} hacker sikkerhedssystemet og deaktiverer alarmen.");
 		}
+
+		public HackerPrisoner()
+		{
+			PowerLevel = 60;
+			IsAvailable = true;
+		}
 	}
 }

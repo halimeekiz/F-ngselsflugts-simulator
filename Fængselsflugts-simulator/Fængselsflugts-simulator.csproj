@@ -9,9 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Exeptions\" />
     <Folder Include="Models\Items\" />
-    <Folder Include="Strategies\" />
   </ItemGroup>
 
 </Project>

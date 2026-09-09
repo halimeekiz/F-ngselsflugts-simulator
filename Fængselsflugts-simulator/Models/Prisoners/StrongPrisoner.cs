@@ -11,6 +11,7 @@ namespace Fængselsflugts_simulator.Models.Prisoners
 		public StrongPrisoner()
 		{
 			PowerLevel = 90;
+			IsAvailable = true;
 		}
 
 		// Override: denne fangetype bruger sin styrke til at bryde en dør op.
@@ -31,5 +32,7 @@ namespace Fængselsflugts_simulator.Models.Prisoners
 			door.Open();
 			Console.WriteLine($"{Name} tvinger låsen op med styrke.");
 		}
+
+
 	}
 }
