@@ -2,14 +2,15 @@
 
 namespace Fængselsflugts_simulator.Models.Prisoners
 {
-	// Abstrakt basisklasse: fælles grundlag for alle fangetyper og bruges til arv og polymorfi
+	// Abstrakt basisklasse: fælles grundlag for alle fangetyper.
+	// Bruges til arv, override og polymorfi.
 	internal abstract class Prisoner
 	{
-		// Indkapsling: feltet er private, så powerLevel ikke kan ændres direkte udefra
+		// Indkapsling: powerLevel kan ikke ændres direkte udefra.
 		private int powerLevel;
 
 		public int Id { get; set; }
-		public string Name { get; set; } = string.Empty; 
+		public string Name { get; set; } = string.Empty;
 		public PrisonerStatus Status { get; set; }
 		public bool IsAvailable { get; set; }
 
@@ -17,19 +18,29 @@ namespace Fængselsflugts_simulator.Models.Prisoners
 		{
 			get { return powerLevel; }
 
-			// protected gør, at kun Prisoner og dens underklasser kan sætte værdien
+			// protected set betyder, at kun Prisoner og underklasser kan sætte værdien.
 			protected set
 			{
-				// Sikrer at PowerLevel altid er mellem 0 og 100
 				if (value < 0 || value > 100)
+				{
 					throw new ArgumentOutOfRangeException(nameof(value));
+				}
 
 				powerLevel = value;
 			}
 		}
-		// Abstrakt metode: tvinger alle konkrete fangetyper til at lave deres egen version.
-		// Det bruges senere til at demonstrere override og polymorfi.
+
+		// protected constructor: kun Prisoner og dens underklasser kan bruge den.
+		protected Prisoner(int id, string name, int powerLevel)
+		{
+			Id = id;
+			Name = name;
+			PowerLevel = powerLevel;
+			Status = PrisonerStatus.InCell;
+			IsAvailable = true;
+		}
+
+		// Abstrakt metode: hver fangetype skal lave sin egen version.
 		public abstract void PerformSpecialAction();
 	}
-
 }

@@ -1,5 +1,6 @@
-﻿using Fængselsflugts_simulator.UI;
+﻿using Fængselsflugts_simulator.Services;
 
 Console.OutputEncoding = System.Text.Encoding.UTF8;
 
-PrisonMap.Draw();
+Game game = new Game();
+game.Start();
