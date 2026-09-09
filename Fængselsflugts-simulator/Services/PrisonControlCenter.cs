@@ -6,37 +6,55 @@ using Fængselsflugts_simulator.Interfaces;
 
 namespace Fængselsflugts_simulator.Services
 {
-	// Vagtcentralen holder styr på alle registrerede fanger og hændelser.
-	// List bruges som collection, fordi vi har brug for at gemme flere objekter af samme type.
+	/// <summary>
+	/// Fængslets kontrolcentral. Holder registrerede fanger og hændelser i collections
+	/// og tildeler fanger via en udskiftelig strategi.
+	/// </summary>
 	internal class PrisonControlCenter
 	{
 		private readonly List<Prisoner> prisoners = new();
 		private readonly List<Incident> incidents = new();
-		// Dependency Inversion: vi afhænger af interfacet og ikke en konkret strategi
+
+		/// <summary>
+		/// Tildelingsstrategien injectes udefra, så klassen ikke afhænger af en konkret implementation.
+		/// </summary>
 		private readonly IAssignmentStrategy assignmentStrategy;
 
-		// Constructor injection: strategien bliver givet udefra.
-		// Det gør det nemt at udskifte strategien uden at ændre kontrolcentralen.
+		/// <summary>
+		/// Opretter kontrolcentralen med constructor injection af tildelingsstrategien.
+		/// </summary>
 		public PrisonControlCenter(IAssignmentStrategy assignmentStrategy)
 		{
 			this.assignmentStrategy = assignmentStrategy;
 		}
 
-		// Tilføjer en fange til vores collection
+		/// <summary>
+		/// Registrerer en fange i collectionen.
+		/// </summary>
 		public void RegisterPrisoner(Prisoner prisoner)
 		{
 			prisoners.Add(prisoner);
 		}
 
-		// Tilføjer en hændelse til vores collection
+		/// <summary>
+		/// Indmelder en hændelse i collectionen.
+		/// </summary>
 		public void ReportIncident(Incident incident)
 		{
 			incidents.Add(incident);
 		}
 
-		// Gennemgår collectionen og viser alle indmeldte hændelser
+		/// <summary>
+		/// Viser alle indmeldte hændelser i konsollen.
+		/// </summary>
 		public void ShowIncidents()
 		{
+			if (incidents.Count == 0)
+			{
+				Console.WriteLine("Ingen hændelser er registreret endnu.");
+				return;
+			}
+
 			foreach (Incident incident in incidents)
 			{
 				Console.WriteLine(
@@ -45,7 +63,12 @@ namespace Fængselsflugts_simulator.Services
 			}
 		}
 
-		// Exception-håndtering: hvis ingen ledig fange findes, kastes vores egen exception.
+		/// <summary>
+		/// Finder den første ledige fange.
+		/// </summary>
+		/// <exception cref="NoSuitablePrisonerException">
+		/// Kastes, hvis ingen ledig fange findes.
+		/// </exception>
 		public Prisoner GetFirstAvailablePrisoner()
 		{
 			Prisoner? prisoner = prisoners.FirstOrDefault(p => p.IsAvailable);
@@ -59,13 +82,20 @@ namespace Fængselsflugts_simulator.Services
 			return prisoner;
 		}
 
-		// Generics: samme Filter<T>-metode bruges på Incident-collectionen
+		/// <summary>
+		/// Returnerer uafklarede hændelser via den generiske <see cref="SearchUtility.Filter{T}"/>.
+		/// </summary>
 		public List<Incident> GetUnresolvedIncidents()
 		{
 			return SearchUtility.Filter(incidents, incident => !incident.IsResolved);
 		}
 
-		// Exception-håndtering: en optaget fange må ikke tildeles en ny hændelse
+		/// <summary>
+		/// Kontrollerer, at fangen er ledig.
+		/// </summary>
+		/// <exception cref="PrisonerUnavailableException">
+		/// Kastes, hvis fangen allerede er optaget.
+		/// </exception>
 		public void CheckPrisonerAvailability(Prisoner prisoner)
 		{
 			if (!prisoner.IsAvailable)
@@ -75,13 +105,17 @@ namespace Fængselsflugts_simulator.Services
 			}
 		}
 
-		// Generics: samme Filter<T>-metode bruges på Prisoner-collectionen
+		/// <summary>
+		/// Returnerer ledige fanger via den generiske <see cref="SearchUtility.Filter{T}"/>.
+		/// </summary>
 		public List<Prisoner> GetAvailablePrisoners()
 		{
 			return SearchUtility.Filter(prisoners, prisoner => prisoner.IsAvailable);
 		}
 
-		// Dependency Inversion: bruger den strategi, som blev givet via constructoren.
+		/// <summary>
+		/// Tildeler en fange til hændelsen ved hjælp af den injectede strategi.
+		/// </summary>
 		public Prisoner AssignPrisoner(Incident incident)
 		{
 			Prisoner prisoner = assignmentStrategy.SelectPrisoner(prisoners, incident);

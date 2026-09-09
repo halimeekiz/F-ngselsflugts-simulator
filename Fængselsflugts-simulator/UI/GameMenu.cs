@@ -2,9 +2,14 @@
 
 namespace Fængselsflugts_simulator.UI
 {
-	// Spillets hovedmenu styres med piletaster og Enter.
+	/// <summary>
+	/// Spillets hovedmenu styres med piletaster og Enter.
+	/// </summary>
 	internal static class GameMenu
 	{
+		/// <summary>
+		/// Viser hovedmenuen og returnerer det valgte menupunkt.
+		/// </summary>
 		public static int Show(Prisoner player)
 		{
 			string[] options =
@@ -12,6 +17,7 @@ namespace Fængselsflugts_simulator.UI
 				"Start flugten",
 				"Se fængselskort",
 				"Se dine evner",
+				"Se hændelser",
 				"Afslut"
 			};
 

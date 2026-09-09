@@ -1,17 +1,31 @@
 ﻿using Fængselsflugts_simulator.Interfaces;
 using Fængselsflugts_simulator.Models.Prisoners;
 using Fængselsflugts_simulator.UI;
+using Fængselsflugts_simulator.Enums;
+using Fængselsflugts_simulator.Strategies;
 
 namespace Fængselsflugts_simulator.Services
 {
-	// Styrer spillets overordnede flow.
+	/// <summary>
+	/// Styrer spillets overordnede flow: intro, fangevalg, menu og kontrolcentral.
+	/// </summary>
 	internal class Game
 	{
+		/// <summary>
+		/// Starter spillet og viser hovedmenuen, indtil spilleren afslutter.
+		/// </summary>
 		public void Start()
 		{
 			GameIntro.Show();
 
 			Prisoner player = PrisonerSelection.ChoosePrisoner();
+			PrisonLocation currentLocation = PrisonLocation.CellBlockA;
+
+			// Dependency Inversion: strategien gives udefra via constructor injection.
+			PrisonControlCenter controlCenter = new PrisonControlCenter(
+				new FirstAvailablePrisonerStrategy());
+
+			RegisterPrisoners(controlCenter, player);
 
 			bool running = true;
 
@@ -22,11 +36,12 @@ namespace Fængselsflugts_simulator.Services
 				switch (choice)
 				{
 					case 0:
-						// Selve flugten bygges herfra senere
+						EscapeGame escapeGame = new EscapeGame(controlCenter);
+						escapeGame.Start(player);
 						break;
 
 					case 1:
-						ShowMap();
+						ShowMap(currentLocation);
 						break;
 
 					case 2:
@@ -34,16 +49,49 @@ namespace Fængselsflugts_simulator.Services
 						break;
 
 					case 3:
+						ShowControlCenter(controlCenter);
+						break;
+
+					case 4:
 						running = false;
 						break;
 				}
 			}
 		}
 
-		private void ShowMap()
+		/// <summary>
+		/// Registrerer den valgte spiller og de øvrige fangetyper i kontrolcentralen.
+		/// </summary>
+		private static void RegisterPrisoners(
+			PrisonControlCenter controlCenter,
+			Prisoner player)
+		{
+			controlCenter.RegisterPrisoner(player);
+
+			Prisoner[] otherPrisoners =
+			{
+				new EscapeArtist(10, "Luna"),
+				new HackerPrisoner(11, "Omar"),
+				new StrongPrisoner(12, "Bo")
+			};
+
+			foreach (Prisoner other in otherPrisoners)
+			{
+				if (other.GetType() == player.GetType())
+				{
+					continue;
+				}
+
+				other.IsAvailable = false;
+				other.Status = PrisonerStatus.InCell;
+				controlCenter.RegisterPrisoner(other);
+			}
+		}
+
+		private void ShowMap(PrisonLocation currentLocation)
 		{
 			Console.Clear();
-			PrisonMap.Draw();
+			PrisonMap.Draw(currentLocation);
 			WaitForEscape();
 		}
 
@@ -79,6 +127,52 @@ namespace Fængselsflugts_simulator.Services
 
 			if (player is IObstacleMover)
 				Console.WriteLine("💪 Flyt tunge forhindringer");
+
+			WaitForEscape();
+		}
+
+		/// <summary>
+		/// Viser kontrolcentralens collections af hændelser og ledige fanger.
+		/// </summary>
+		private void ShowControlCenter(PrisonControlCenter controlCenter)
+		{
+			Console.Clear();
+
+			Console.ForegroundColor = ConsoleColor.Cyan;
+			Console.WriteLine("KONTROLCENTRALEN\n");
+			Console.ResetColor();
+
+			Console.WriteLine("HÆNDELSER:");
+			controlCenter.ShowIncidents();
+
+			Console.WriteLine("\nUAFKLAREDE HÆNDELSER:");
+			var unresolved = controlCenter.GetUnresolvedIncidents();
+			if (unresolved.Count == 0)
+			{
+				Console.WriteLine("Ingen.");
+			}
+			else
+			{
+				foreach (var incident in unresolved)
+				{
+					Console.WriteLine(
+						$"- {incident.Description} ({incident.Location}) [{incident.Severity}]");
+				}
+			}
+
+			Console.WriteLine("\nLEDIGE FANGER:");
+			var available = controlCenter.GetAvailablePrisoners();
+			if (available.Count == 0)
+			{
+				Console.WriteLine("Ingen ledige fanger.");
+			}
+			else
+			{
+				foreach (var prisoner in available)
+				{
+					Console.WriteLine($"- {prisoner.Name}");
+				}
+			}
 
 			WaitForEscape();
 		}
