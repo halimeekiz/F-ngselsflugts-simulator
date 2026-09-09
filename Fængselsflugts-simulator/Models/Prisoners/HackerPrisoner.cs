@@ -18,7 +18,7 @@ namespace Fængselsflugts_simulator.Models.Prisoners
 		/// <inheritdoc />
 		public override void PerformSpecialAction()
 		{
-			Console.WriteLine($"{Name} hacker fængslets sikkerhedssystem.");
+			Console.WriteLine($"{Name} bruger sine hacking-evner.");
 		}
 
 		/// <inheritdoc />

@@ -149,10 +149,12 @@ namespace Fængselsflugts_simulator.Services
 		}
 
 		/// <summary>
-		/// Interfaces afgør, hvordan den valgte fange åbner en låst dør.
+		/// Åbner en låst dør. Bruger PerformSpecialAction og fangens interfaces.
 		/// </summary>
 		private void OpenLockedDoor(Door door)
 		{
+			player.PerformSpecialAction();
+
 			if (player is ISuperStrong strongPrisoner)
 			{
 				strongPrisoner.BreakDoor(door);

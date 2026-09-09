@@ -19,7 +19,7 @@ namespace Fængselsflugts_simulator.Models.Prisoners
 		/// <inheritdoc />
 		public override void PerformSpecialAction()
 		{
-			Console.WriteLine($"{Name} sparker døren op med rå styrke!");
+			Console.WriteLine($"{Name} bruger sin rå styrke.");
 		}
 
 		/// <inheritdoc />

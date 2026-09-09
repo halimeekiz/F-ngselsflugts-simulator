@@ -19,7 +19,7 @@ namespace Fængselsflugts_simulator.Models.Prisoners
 		/// <inheritdoc />
 		public override void PerformSpecialAction()
 		{
-			Console.WriteLine($"{Name} forsøger at dirke en lås op.");
+			Console.WriteLine($"{Name} bruger sin flugtkunst.");
 		}
 
 		/// <inheritdoc />
