@@ -4,7 +4,7 @@ using Fængselsflugts_simulator.Models;
 namespace Fængselsflugts_simulator.Models.Prisoners
 {
 	// StrongPrisoner arver fra Prisoner og implementerer flere interfaces.
-	internal class StrongPrisoner : Prisoner, ISuperStrong, ILockPicker
+	internal class StrongPrisoner : Prisoner, ISuperStrong, ILockPicker, IObstacleMover
 	{
 		// Sender fangens startdata videre til basisklassen Prisoner.
 		public StrongPrisoner(int id, string name)
@@ -30,6 +30,12 @@ namespace Fængselsflugts_simulator.Models.Prisoners
 		{
 			door.Open();
 			Console.WriteLine($"{Name} tvinger låsen op med styrke.");
+		}
+
+		// Implementerer evnen til at flytte tunge forhindringer.
+		public void MoveObstacle(string obstacle)
+		{
+			Console.WriteLine($"{Name} flytter {obstacle} med rå styrke.");
 		}
 	}
 }

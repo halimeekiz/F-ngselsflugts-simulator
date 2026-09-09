@@ -1,4 +1,5 @@
-﻿using Fængselsflugts_simulator.Models.Prisoners;
+﻿using Fængselsflugts_simulator.Interfaces;
+using Fængselsflugts_simulator.Models.Prisoners;
 using Fængselsflugts_simulator.UI;
 
 namespace Fængselsflugts_simulator.Services
@@ -57,24 +58,27 @@ namespace Fængselsflugts_simulator.Services
 			Console.WriteLine($"Fange: {player.Name}");
 			Console.WriteLine($"Power: {player.PowerLevel}\n");
 
-			if (player is EscapeArtist)
+			// Interfaces afgør hvilke evner den valgte fange har.
+			if (player is ILockPicker)
+				Console.WriteLine("🔓 Åbn eller tving låste døre op");
+
+			if (player is IHacker)
+				Console.WriteLine("💻 Hack sikkerhedssystemer");
+
+			if (player is ISneaky)
+				Console.WriteLine("👣 Snig dig forbi vagter");
+
+			if (player is ISecurityHacker)
 			{
-				Console.WriteLine("🔓 Dirk låse");
-				Console.WriteLine("💻 Simpel hacking");
-				Console.WriteLine("👣 Snigeevne");
-			}
-			else if (player is HackerPrisoner)
-			{
-				Console.WriteLine("💻 Hack sikkerhed");
 				Console.WriteLine("📹 Deaktiver kameraer");
-				Console.WriteLine("🚨 Manipuler alarm");
+				Console.WriteLine("🚨 Deaktiver alarm");
 			}
-			else if (player is StrongPrisoner)
-			{
-				Console.WriteLine("💥 Bryd døre");
-				Console.WriteLine("🔓 Tving låse op");
-				Console.WriteLine("💪 Flyt forhindringer");
-			}
+
+			if (player is ISuperStrong)
+				Console.WriteLine("💥 Bryd døre med rå styrke");
+
+			if (player is IObstacleMover)
+				Console.WriteLine("💪 Flyt tunge forhindringer");
 
 			WaitForEscape();
 		}

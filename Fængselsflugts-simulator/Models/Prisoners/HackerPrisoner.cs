@@ -2,8 +2,8 @@
 
 namespace Fængselsflugts_simulator.Models.Prisoners
 {
-	// HackerPrisoner arver fra Prisoner og får hacking-evnen via IHacker.
-	internal class HackerPrisoner : Prisoner, IHacker
+	// HackerPrisoner arver fra Prisoner og har flere hacking-evner.
+	internal class HackerPrisoner : Prisoner, IHacker, ISecurityHacker
 	{
 		// Sender fangens startdata videre til basisklassen Prisoner.
 		public HackerPrisoner(int id, string name)
@@ -17,10 +17,22 @@ namespace Fængselsflugts_simulator.Models.Prisoners
 			Console.WriteLine($"{Name} hacker fængslets sikkerhedssystem.");
 		}
 
-		// Implementerer hacking-evnen fra IHacker.
+		// Implementerer almindelig hacking fra IHacker.
 		public void HackSecurity()
 		{
-			Console.WriteLine($"{Name} hacker sikkerhedssystemet og deaktiverer alarmen.");
+			Console.WriteLine($"{Name} hacker sikkerhedssystemet.");
+		}
+
+		// Implementerer sikkerhedsevne fra ISecurityHacker.
+		public void DisableCameras()
+		{
+			Console.WriteLine($"{Name} deaktiverer overvågningskameraerne.");
+		}
+
+		// Implementerer sikkerhedsevne fra ISecurityHacker.
+		public void DisableAlarm()
+		{
+			Console.WriteLine($"{Name} deaktiverer alarmsystemet.");
 		}
 	}
 }
