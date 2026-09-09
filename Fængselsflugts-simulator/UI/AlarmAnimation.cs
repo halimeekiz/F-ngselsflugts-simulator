@@ -1,8 +1,13 @@
 ﻿namespace Fængselsflugts_simulator.UI
 {
-	// UI-animation: vises når fængslets alarm bliver aktiveret.
+	/// <summary>
+	/// Konsolanimation, der vises når fængslets alarm bliver aktiveret.
+	/// </summary>
 	internal static class AlarmAnimation
 	{
+		/// <summary>
+		/// Afspiller alarm-animationen i konsollen.
+		/// </summary>
 		public static void Show()
 		{
 			for (int i = 0; i < 4; i++)

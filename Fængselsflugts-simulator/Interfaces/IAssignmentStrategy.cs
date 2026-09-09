@@ -3,10 +3,15 @@ using Fængselsflugts_simulator.Models.Prisoners;
 
 namespace Fængselsflugts_simulator.Interfaces
 {
-	// Dependency Inversion: kontrolcentralen afhænger af dette interface
-	// i stedet for en bestemt tildelingsstrategi.
+	/// <summary>
+	/// Strategi for tildeling af fanger til hændelser.
+	/// PrisonControlCenter afhænger af dette interface og ikke af en konkret klasse.
+	/// </summary>
 	internal interface IAssignmentStrategy
 	{
+		/// <summary>
+		/// Vælger en fange til den angivne hændelse.
+		/// </summary>
 		Prisoner SelectPrisoner(List<Prisoner> prisoners, Incident incident);
 	}
 }

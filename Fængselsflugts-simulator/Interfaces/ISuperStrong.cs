@@ -2,10 +2,14 @@
 
 namespace Fængselsflugts_simulator.Interfaces
 {
-	// Interface: beskriver en styrke-evne, som forskellige fangetyper kan implementere.
-	// Det viser, at interfaces kan bruges uafhængigt af klassernes nedarvning.
+	/// <summary>
+	/// Evne til at bryde døre op med fysisk styrke.
+	/// </summary>
 	internal interface ISuperStrong
 	{
+		/// <summary>
+		/// Bryder den angivne dør op med rå styrke.
+		/// </summary>
 		void BreakDoor(Door door);
 	}
 }

@@ -1,0 +1,164 @@
+classDiagram
+    class Prisoner {
+        <<abstract>>
+        -int powerLevel
+        +int Id
+        +string Name
+        +PrisonerStatus Status
+        +bool IsAvailable
+        +int PowerLevel
+        #Prisoner()
+        +PerformSpecialAction()*
+    }
+
+    class EscapeArtist
+    class HackerPrisoner
+    class StrongPrisoner
+
+    Prisoner <|-- EscapeArtist
+    Prisoner <|-- HackerPrisoner
+    Prisoner <|-- StrongPrisoner
+
+    class ILockPicker {
+        <<interface>>
+        +PickLock(Door)
+    }
+    class IHacker {
+        <<interface>>
+        +HackSecurity()
+    }
+    class ISuperStrong {
+        <<interface>>
+        +BreakDoor(Door)
+    }
+    class ISneaky {
+        <<interface>>
+        +Sneak()
+    }
+    class ISecurityHacker {
+        <<interface>>
+        +DisableCameras()
+        +DisableAlarm()
+    }
+    class IObstacleMover {
+        <<interface>>
+        +MoveObstacle(string)
+    }
+
+    EscapeArtist ..|> ILockPicker
+    EscapeArtist ..|> IHacker
+    EscapeArtist ..|> ISneaky
+    HackerPrisoner ..|> IHacker
+    HackerPrisoner ..|> ISecurityHacker
+    StrongPrisoner ..|> ISuperStrong
+    StrongPrisoner ..|> ILockPicker
+    StrongPrisoner ..|> IObstacleMover
+
+    class Door {
+        +string Name
+        +bool IsLocked
+        +Open()
+        +Lock()
+    }
+
+    ILockPicker ..> Door
+    ISuperStrong ..> Door
+
+    class Incident {
+        +string Description
+        +string Location
+        +Severity Severity
+        +bool IsResolved
+        +Action~Incident~ OnResolved
+        +Resolve()
+    }
+
+    class PrisonControlCenter {
+        -List~Prisoner~ prisoners
+        -List~Incident~ incidents
+        -IAssignmentStrategy assignmentStrategy
+        +RegisterPrisoner()
+        +ReportIncident()
+        +AssignPrisoner()
+        +GetUnresolvedIncidents()
+    }
+
+    class IAssignmentStrategy {
+        <<interface>>
+        +SelectPrisoner()
+    }
+    class FirstAvailablePrisonerStrategy
+    FirstAvailablePrisonerStrategy ..|> IAssignmentStrategy
+
+    PrisonControlCenter "1" o-- "*" Prisoner : registrerer
+    PrisonControlCenter "1" *-- "*" Incident : indeholder
+    PrisonControlCenter --> IAssignmentStrategy
+
+    class SearchUtility {
+        <<static>>
+        +Filter~T~()
+    }
+    PrisonControlCenter ..> SearchUtility
+
+    class PrisonerUnavailableException
+    class NoSuitablePrisonerException
+    Exception <|-- PrisonerUnavailableException
+    Exception <|-- NoSuitablePrisonerException
+    PrisonControlCenter ..> PrisonerUnavailableException
+    PrisonControlCenter ..> NoSuitablePrisonerException
+
+    class Game {
+        +Start()
+    }
+    class EscapeGame {
+        +Start(Prisoner)
+    }
+
+    Game --> PrisonControlCenter
+    Game --> EscapeGame
+    EscapeGame --> PrisonControlCenter
+    EscapeGame --> Prisoner
+    EscapeGame --> Door
+    EscapeGame --> Incident
+
+    class PrisonMap
+    class DirectionMenu
+    class GameMenu
+    class GameIntro
+    class PrisonerSelection
+    class AlarmAnimation
+
+    Game --> GameMenu
+    Game --> GameIntro
+    Game --> PrisonerSelection
+    Game --> PrisonMap
+    EscapeGame --> PrisonMap
+    EscapeGame --> DirectionMenu
+    EscapeGame --> AlarmAnimation
+
+    class PrisonerStatus {
+        <<enumeration>>
+        InCell
+        Escaping
+        Escaped
+        Caught
+    }
+    class Severity {
+        <<enumeration>>
+        Low
+        Medium
+        High
+        Critical
+    }
+    class PrisonLocation {
+        <<enumeration>>
+        CellBlockA
+        Corridor
+        Yard
+        ControlRoom
+        MainEntrance
+    }
+
+    Prisoner --> PrisonerStatus
+    Incident --> Severity
+    EscapeGame --> PrisonLocation

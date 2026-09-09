@@ -5,10 +5,12 @@ using Fængselsflugts_simulator.Models.Prisoners;
 
 namespace Fængselsflugts_simulator.Strategies
 {
-	// Konkret strategi: vælger den første ledige fange.
-	// Opfylder kravet om en udskiftelig tildelingsstrategi.
+	/// <summary>
+	/// Konkret tildelingsstrategi, der vælger den første ledige fange.
+	/// </summary>
 	internal class FirstAvailablePrisonerStrategy : IAssignmentStrategy
 	{
+		/// <inheritdoc />
 		public Prisoner SelectPrisoner(
 			List<Prisoner> prisoners,
 			Incident incident)

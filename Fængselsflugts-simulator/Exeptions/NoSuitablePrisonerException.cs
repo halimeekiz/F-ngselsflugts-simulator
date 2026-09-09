@@ -1,9 +1,13 @@
 ﻿namespace Fængselsflugts_simulator.Exceptions
 {
-	// Selvudviklet exception: bruges når der ikke findes en egnet fange til en hændelse.
-	// Sammen med PrisonerUnavailableException opfylder den kravet om mindst to egne exceptions.
+	/// <summary>
+	/// Kastes, når der ikke findes en egnet ledig fange til en hændelse.
+	/// </summary>
 	internal class NoSuitablePrisonerException : Exception
 	{
+		/// <summary>
+		/// Opretter exceptionen med en forklarende besked.
+		/// </summary>
 		public NoSuitablePrisonerException(string message)
 			: base(message)
 		{

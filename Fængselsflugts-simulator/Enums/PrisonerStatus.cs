@@ -1,6 +1,8 @@
 ﻿namespace Fængselsflugts_simulator.Enums
 {
-	// Mulige statusser en fange kan have under simulationen
+	/// <summary>
+	/// Mulige statusser en fange kan have under simulationen.
+	/// </summary>
 	internal enum PrisonerStatus
 	{
 		InCell,

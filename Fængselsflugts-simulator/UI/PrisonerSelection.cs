@@ -2,9 +2,14 @@
 
 namespace Fængselsflugts_simulator.UI
 {
-	// Game-menu til valg af fangetype med piletaster og Enter.
+	/// <summary>
+	/// Menu til valg af fangetype med piletaster og Enter.
+	/// </summary>
 	internal static class PrisonerSelection
 	{
+		/// <summary>
+		/// Lader spilleren vælge mellem Escape Artist, Hacker og Strong Prisoner.
+		/// </summary>
 		public static Prisoner ChoosePrisoner()
 		{
 			string[] options =

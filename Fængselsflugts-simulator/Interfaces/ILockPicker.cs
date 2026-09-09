@@ -2,10 +2,14 @@
 
 namespace Fængselsflugts_simulator.Interfaces
 {
-	// Interface: beskriver en evne, som kun nogle fangetyper har.
-	// Interfaces gør, at evnen kan bruges på tværs af forskellige fangetyper.
+	/// <summary>
+	/// Evne til at dirke eller tvinge en låst dør op. Kan implementeres uafhængigt af arv.
+	/// </summary>
 	internal interface ILockPicker
 	{
+		/// <summary>
+		/// Åbner den angivne dør ved at dirke eller tvinge låsen.
+		/// </summary>
 		void PickLock(Door door);
 	}
 }

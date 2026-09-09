@@ -1,6 +1,8 @@
 ﻿namespace Fængselsflugts_simulator.Enums
 {
-	// Enum begrænser alvorlighedsgraden til faste værdier
+	/// <summary>
+	/// Alvorlighedsgrad for en hændelse i fængslet.
+	/// </summary>
 	internal enum Severity
 	{
 		Low,

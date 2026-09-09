@@ -1,6 +1,8 @@
 ﻿namespace Fængselsflugts_simulator.UI
 {
-	// Viser spillets intro og mission.
+	/// <summary>
+	/// Viser spillets intro og mission.
+	/// </summary>
 	internal static class GameIntro
 	{
 		public static void Show()

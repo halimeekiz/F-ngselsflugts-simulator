@@ -1,8 +1,13 @@
 ﻿namespace Fængselsflugts_simulator.Interfaces
 {
-	// Interface: evne til at flytte tunge forhindringer.
+	/// <summary>
+	/// Evne til at flytte tunge forhindringer.
+	/// </summary>
 	internal interface IObstacleMover
 	{
+		/// <summary>
+		/// Flytter den angivne forhindring med rå styrke.
+		/// </summary>
 		void MoveObstacle(string obstacle);
 	}
 }

@@ -1,9 +1,18 @@
 ﻿namespace Fængselsflugts_simulator.Interfaces
 {
-	// Interface: evner til at manipulere fængslets sikkerhedssystem.
+	/// <summary>
+	/// Evne til at deaktivere kameraer og alarmsystemer.
+	/// </summary>
 	internal interface ISecurityHacker
 	{
+		/// <summary>
+		/// Deaktiverer overvågningskameraerne.
+		/// </summary>
 		void DisableCameras();
+
+		/// <summary>
+		/// Deaktiverer fængslets alarmsystem.
+		/// </summary>
 		void DisableAlarm();
 	}
 }

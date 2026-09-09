@@ -2,34 +2,38 @@
 
 namespace Fængselsflugts_simulator.Models.Prisoners
 {
-	// HackerPrisoner arver fra Prisoner og har flere hacking-evner.
+	/// <summary>
+	/// Fangetype der hacker sikkerhedssystemer, kameraer og alarmer.
+	/// </summary>
 	internal class HackerPrisoner : Prisoner, IHacker, ISecurityHacker
 	{
-		// Sender fangens startdata videre til basisklassen Prisoner.
+		/// <summary>
+		/// Opretter en hacker med power-niveau 60.
+		/// </summary>
 		public HackerPrisoner(int id, string name)
 			: base(id, name, 60)
 		{
 		}
 
-		// Override: HackerPrisoner laver sin egen version af den abstrakte metode.
+		/// <inheritdoc />
 		public override void PerformSpecialAction()
 		{
 			Console.WriteLine($"{Name} hacker fængslets sikkerhedssystem.");
 		}
 
-		// Implementerer almindelig hacking fra IHacker.
+		/// <inheritdoc />
 		public void HackSecurity()
 		{
 			Console.WriteLine($"{Name} hacker sikkerhedssystemet.");
 		}
 
-		// Implementerer sikkerhedsevne fra ISecurityHacker.
+		/// <inheritdoc />
 		public void DisableCameras()
 		{
 			Console.WriteLine($"{Name} deaktiverer overvågningskameraerne.");
 		}
 
-		// Implementerer sikkerhedsevne fra ISecurityHacker.
+		/// <inheritdoc />
 		public void DisableAlarm()
 		{
 			Console.WriteLine($"{Name} deaktiverer alarmsystemet.");

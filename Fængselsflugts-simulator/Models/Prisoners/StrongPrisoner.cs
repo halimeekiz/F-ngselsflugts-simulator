@@ -3,36 +3,40 @@ using Fængselsflugts_simulator.Models;
 
 namespace Fængselsflugts_simulator.Models.Prisoners
 {
-	// StrongPrisoner arver fra Prisoner og implementerer flere interfaces.
+	/// <summary>
+	/// Fangetype der bruger rå styrke til at bryde døre og flytte tunge forhindringer.
+	/// </summary>
 	internal class StrongPrisoner : Prisoner, ISuperStrong, ILockPicker, IObstacleMover
 	{
-		// Sender fangens startdata videre til basisklassen Prisoner.
+		/// <summary>
+		/// Opretter en Strong Prisoner med power-niveau 90.
+		/// </summary>
 		public StrongPrisoner(int id, string name)
 			: base(id, name, 90)
 		{
 		}
 
-		// Override: StrongPrisoner laver sin egen version af den abstrakte metode.
+		/// <inheritdoc />
 		public override void PerformSpecialAction()
 		{
 			Console.WriteLine($"{Name} sparker døren op med rå styrke!");
 		}
 
-		// Implementerer styrke-evnen fra ISuperStrong.
+		/// <inheritdoc />
 		public void BreakDoor(Door door)
 		{
 			door.Open();
 			Console.WriteLine($"{Name} bryder døren {door.Name} op med rå styrke.");
 		}
 
-		// Implementerer låsedirknings-evnen fra ILockPicker.
+		/// <inheritdoc />
 		public void PickLock(Door door)
 		{
 			door.Open();
 			Console.WriteLine($"{Name} tvinger låsen op med styrke.");
 		}
 
-		// Implementerer evnen til at flytte tunge forhindringer.
+		/// <inheritdoc />
 		public void MoveObstacle(string obstacle)
 		{
 			Console.WriteLine($"{Name} flytter {obstacle} med rå styrke.");

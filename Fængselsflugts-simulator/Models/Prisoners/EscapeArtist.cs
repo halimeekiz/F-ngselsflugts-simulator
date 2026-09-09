@@ -3,35 +3,39 @@ using Fængselsflugts_simulator.Models;
 
 namespace Fængselsflugts_simulator.Models.Prisoners
 {
-	// EscapeArtist arver fra Prisoner og implementerer flere interfaces.
+	/// <summary>
+	/// Fangetype der dirker låse, hacker simple systemer og sniger sig forbi vagter.
+	/// </summary>
 	internal class EscapeArtist : Prisoner, ILockPicker, IHacker, ISneaky
 	{
-		// Sender fangens startdata videre til basisklassen Prisoner.
+		/// <summary>
+		/// Opretter en Escape Artist med power-niveau 70.
+		/// </summary>
 		public EscapeArtist(int id, string name)
 			: base(id, name, 70)
 		{
 		}
 
-		// Override: EscapeArtist laver sin egen version af den abstrakte metode.
+		/// <inheritdoc />
 		public override void PerformSpecialAction()
 		{
 			Console.WriteLine($"{Name} forsøger at dirke en lås op.");
 		}
 
-		// Implementerer låsedirknings-evnen fra ILockPicker.
+		/// <inheritdoc />
 		public void PickLock(Door door)
 		{
 			door.Open();
 			Console.WriteLine($"{Name} dirker låsen på {door.Name} op.");
 		}
 
-		// Implementerer hacking-evnen fra IHacker.
+		/// <inheritdoc />
 		public void HackSecurity()
 		{
 			Console.WriteLine($"{Name} hacker et simpelt elektronisk låsesystem.");
 		}
 
-		// Implementerer snigeevnen fra ISneaky.
+		/// <inheritdoc />
 		public void Sneak()
 		{
 			Console.WriteLine($"{Name} sniger sig lydløst forbi vagterne.");
