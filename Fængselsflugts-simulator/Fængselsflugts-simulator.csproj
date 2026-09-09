@@ -9,7 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\" />
     <Folder Include="Exeptions\" />
     <Folder Include="Models\Incidents\" />
     <Folder Include="Models\Items\" />
