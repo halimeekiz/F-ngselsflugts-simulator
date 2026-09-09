@@ -10,11 +10,8 @@
 
   <ItemGroup>
     <Folder Include="Exeptions\" />
-    <Folder Include="Models\Incidents\" />
     <Folder Include="Models\Items\" />
-    <Folder Include="Utilities\" />
     <Folder Include="Strategies\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>
