@@ -1,4 +1,5 @@
-﻿using Fængselsflugts_simulator.Interfaces;
+﻿using Fængselsflugts_simulator.Exceptions;
+using Fængselsflugts_simulator.Interfaces;
 using Fængselsflugts_simulator.Models.Incidents;
 using Fængselsflugts_simulator.Models.Prisoners;
 using Fængselsflugts_simulator.UI;
@@ -38,7 +39,7 @@ namespace Fængselsflugts_simulator.Services
 				{
 					case 0:
 						EscapeGame escapeGame = new EscapeGame(controlCenter);
-						escapeGame.Start(player);
+						currentLocation = escapeGame.Start(player);
 						break;
 
 					case 1:
@@ -109,7 +110,9 @@ namespace Fængselsflugts_simulator.Services
 			Console.ResetColor();
 
 			Console.WriteLine($"Fange: {player.Name}");
-			Console.WriteLine($"Power: {player.PowerLevel}\n");
+			Console.WriteLine($"ID: {player.Id}");
+			Console.WriteLine($"Power: {player.PowerLevel}");
+			Console.WriteLine($"Status: {GetStatusText(player.Status)}\n");
 
 			// Interfaces afgør hvilke evner den valgte fange har.
 			if (player is ILockPicker)
@@ -169,14 +172,27 @@ namespace Fængselsflugts_simulator.Services
 			var available = controlCenter.GetAvailablePrisoners();
 			if (available.Count == 0)
 			{
-				Console.WriteLine("Ingen ledige fanger.");
+				Console.WriteLine("Ingen.");
 			}
 			else
 			{
 				foreach (var prisoner in available)
 				{
-					Console.WriteLine($"- {prisoner.Name}");
+					Console.WriteLine(
+						$"- {prisoner.Name} (ID {prisoner.Id})");
 				}
+			}
+
+			Console.WriteLine("\nFØRSTE LEDIGE FANGE:");
+			try
+			{
+				Prisoner firstAvailable = controlCenter.GetFirstAvailablePrisoner();
+				Console.WriteLine(
+					$"{firstAvailable.Name} (ID {firstAvailable.Id})");
+			}
+			catch (NoSuitablePrisonerException ex)
+			{
+				Console.WriteLine(ex.Message);
 			}
 
 			WaitForEscape();
@@ -232,6 +248,18 @@ namespace Fængselsflugts_simulator.Services
 			controlCenter.RegisterPrisoner(new EscapeArtist(10, "Luna"));
 			controlCenter.RegisterPrisoner(new HackerPrisoner(11, "Omar"));
 			controlCenter.RegisterPrisoner(new StrongPrisoner(12, "Bo"));
+		}
+
+		private static string GetStatusText(PrisonerStatus status)
+		{
+			return status switch
+			{
+				PrisonerStatus.InCell => "I cellen",
+				PrisonerStatus.Escaping => "På flugt",
+				PrisonerStatus.Escaped => "Flygtet",
+				PrisonerStatus.Caught => "Fanget",
+				_ => status.ToString()
+			};
 		}
 
 		private void WaitForEscape()

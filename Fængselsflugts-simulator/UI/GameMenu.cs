@@ -1,4 +1,5 @@
-﻿using Fængselsflugts_simulator.Models.Prisoners;
+﻿using Fængselsflugts_simulator.Enums;
+using Fængselsflugts_simulator.Models.Prisoners;
 
 namespace Fængselsflugts_simulator.UI
 {
@@ -40,8 +41,10 @@ namespace Fængselsflugts_simulator.UI
 				Console.WriteLine("SPILLER");
 				Console.ResetColor();
 
-				Console.WriteLine($"Fange : {player.Name}");
-				Console.WriteLine($"Power : {player.PowerLevel}");
+				Console.WriteLine($"Fange  : {player.Name}");
+				Console.WriteLine($"ID     : {player.Id}");
+				Console.WriteLine($"Power  : {player.PowerLevel}");
+				Console.WriteLine($"Status : {GetStatusText(player.Status)}");
 
 				Console.WriteLine();
 				Console.WriteLine("────────────────────────────────────────");
@@ -85,6 +88,18 @@ namespace Fængselsflugts_simulator.UI
 				if (key == ConsoleKey.Enter)
 					return selected;
 			}
+		}
+
+		private static string GetStatusText(PrisonerStatus status)
+		{
+			return status switch
+			{
+				PrisonerStatus.InCell => "I cellen",
+				PrisonerStatus.Escaping => "På flugt",
+				PrisonerStatus.Escaped => "Flygtet",
+				PrisonerStatus.Caught => "Fanget",
+				_ => status.ToString()
+			};
 		}
 	}
 }

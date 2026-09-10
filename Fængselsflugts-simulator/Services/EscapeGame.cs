@@ -22,6 +22,8 @@ namespace Fængselsflugts_simulator.Services
 		private bool yardCleared;
 		private bool guardRoomCleared;
 		private bool securityDisabled;
+		private bool kitchenHacked;
+		private bool lockerPicked;
 		private Incident? escapeIncident;
 		private Incident? alarmIncident;
 
@@ -36,7 +38,8 @@ namespace Fængselsflugts_simulator.Services
 		/// <summary>
 		/// Starter flugten for den valgte fange.
 		/// </summary>
-		public void Start(Prisoner chosenPlayer)
+		/// <returns>Spillerens sidste placering på kortet.</returns>
+		public PrisonLocation Start(Prisoner chosenPlayer)
 		{
 			player = chosenPlayer;
 			player.Status = PrisonerStatus.Escaping;
@@ -47,6 +50,8 @@ namespace Fængselsflugts_simulator.Services
 			yardCleared = false;
 			guardRoomCleared = false;
 			securityDisabled = false;
+			kitchenHacked = false;
+			lockerPicked = false;
 			escapeIncident = null;
 			alarmIncident = null;
 
@@ -54,7 +59,7 @@ namespace Fængselsflugts_simulator.Services
 
 			if (player.Status == PrisonerStatus.Caught)
 			{
-				return;
+				return currentLocation;
 			}
 
 			currentLocation = PrisonLocation.Corridor;
@@ -73,11 +78,11 @@ namespace Fængselsflugts_simulator.Services
 						break;
 
 					case PrisonLocation.Cafeteria:
-						currentLocation = ChooseFromCafeteria();
+						HandleCafeteria();
 						break;
 
 					case PrisonLocation.CellBlockB:
-						currentLocation = ChooseFromCellBlockB();
+						HandleCellBlockB();
 						break;
 
 					case PrisonLocation.Shower:
@@ -109,6 +114,8 @@ namespace Fængselsflugts_simulator.Services
 						break;
 				}
 			}
+
+			return currentLocation;
 		}
 
 		private void EscapeFromCell()
@@ -132,6 +139,7 @@ namespace Fængselsflugts_simulator.Services
 			{
 				Name = "celledøren"
 			};
+			cellDoor.Lock();
 
 			OpenLockedDoor(cellDoor);
 
@@ -153,6 +161,12 @@ namespace Fængselsflugts_simulator.Services
 		/// </summary>
 		private void OpenLockedDoor(Door door)
 		{
+			if (!door.IsLocked)
+			{
+				Console.WriteLine($"{door.Name} er allerede åben.");
+				return;
+			}
+
 			player.PerformSpecialAction();
 
 			if (player is ISuperStrong strongPrisoner)
@@ -213,8 +227,27 @@ namespace Fængselsflugts_simulator.Services
 			};
 		}
 
+		private void HandleCafeteria()
+		{
+			if (!kitchenHacked && player is IHacker hacker)
+			{
+				PrisonMap.Draw(PrisonLocation.Cafeteria);
+				Console.WriteLine();
+				Console.WriteLine("Køkkendøren har en elektronisk lås.");
+				hacker.HackSecurity();
+				kitchenHacked = true;
+				WaitToContinue();
+			}
+
+			currentLocation = ChooseFromCafeteria();
+		}
+
 		private PrisonLocation ChooseFromCafeteria()
 		{
+			string description = kitchenHacked
+				? "Køkkendøren er hacket. Der er stadig ingen vej ud her."
+				: "Kantinen er tom. Der er ingen vagter her.";
+
 			int choice = DirectionMenu.Show(
 				PrisonLocation.Cafeteria,
 				"DU ER I KANTINEN - HVOR VIL DU GÅ?",
@@ -223,7 +256,7 @@ namespace Fængselsflugts_simulator.Services
 					"↓ Gangen",
 					"→ Celleblok B"
 				},
-				"Kantinen er tom. Der er ingen vagter her.");
+				description);
 
 			return choice switch
 			{
@@ -233,8 +266,30 @@ namespace Fængselsflugts_simulator.Services
 			};
 		}
 
+		private void HandleCellBlockB()
+		{
+			if (!lockerPicked && player is ILockPicker lockPicker)
+			{
+				PrisonMap.Draw(PrisonLocation.CellBlockB);
+				Console.WriteLine();
+				Console.WriteLine("Et skab i cellen er låst.");
+
+				Door locker = new Door { Name = "skabet" };
+				locker.Lock();
+				lockPicker.PickLock(locker);
+				lockerPicked = true;
+				WaitToContinue();
+			}
+
+			currentLocation = ChooseFromCellBlockB();
+		}
+
 		private PrisonLocation ChooseFromCellBlockB()
 		{
+			string description = lockerPicked
+				? "Skabet er dirket op. De andre celler er stadig låst."
+				: "De andre celler er låst. Her er der ingen vej ud.";
+
 			int choice = DirectionMenu.Show(
 				PrisonLocation.CellBlockB,
 				"DU ER I CELLEBLOK B - HVOR VIL DU GÅ?",
@@ -243,7 +298,7 @@ namespace Fængselsflugts_simulator.Services
 					"← Kantinen",
 					"↓ Gangen"
 				},
-				"De andre celler er låst. Her er der ingen vej ud.");
+				description);
 
 			return choice switch
 			{
@@ -600,7 +655,7 @@ namespace Fængselsflugts_simulator.Services
 			PrisonMap.Draw(PrisonLocation.MainEntrance);
 
 			Console.WriteLine();
-			Console.WriteLine("Du er ved hovedindgangen. Den store port er låst.");
+			Console.WriteLine("Du er ved hovedindgangen. Vagterne har låst den store port.");
 			Console.WriteLine("\nTryk ENTER for at åbne porten.");
 			WaitForEnter();
 
@@ -615,6 +670,7 @@ namespace Fængselsflugts_simulator.Services
 			{
 				Name = "hovedporten"
 			};
+			mainGate.Lock();
 
 			OpenLockedDoor(mainGate);
 
