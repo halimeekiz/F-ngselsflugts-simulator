@@ -18,6 +18,7 @@ namespace Fængselsflugts_simulator.UI
 				"Se fængselskort",
 				"Se dine evner",
 				"Se hændelser",
+				"Se tildelingsstrategier",
 				"Afslut"
 			};
 

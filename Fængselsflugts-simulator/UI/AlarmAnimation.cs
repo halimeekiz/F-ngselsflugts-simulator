@@ -17,7 +17,7 @@
 				Console.ForegroundColor = ConsoleColor.Red;
 				Console.WriteLine();
 				Console.WriteLine("╔══════════════════════════════════════╗");
-				Console.WriteLine("║          🚨  ALARM!  🚨             ║");
+				Console.WriteLine("║          🚨  ALARM!  🚨              ║");
 				Console.WriteLine("║                                      ║");
 				Console.WriteLine("║       FLUGTFORSØG OPDAGET!           ║");
 				Console.WriteLine("╚══════════════════════════════════════╝");

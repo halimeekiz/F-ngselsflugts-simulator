@@ -1,4 +1,5 @@
 ﻿using Fængselsflugts_simulator.Interfaces;
+using Fængselsflugts_simulator.Models.Incidents;
 using Fængselsflugts_simulator.Models.Prisoners;
 using Fængselsflugts_simulator.UI;
 using Fængselsflugts_simulator.Enums;
@@ -53,6 +54,10 @@ namespace Fængselsflugts_simulator.Services
 						break;
 
 					case 4:
+						ShowAssignmentStrategies();
+						break;
+
+					case 5:
 						running = false;
 						break;
 				}
@@ -175,6 +180,58 @@ namespace Fængselsflugts_simulator.Services
 			}
 
 			WaitForEscape();
+		}
+
+		/// <summary>
+		/// Viser at to strategier kan køre på samme vagtcentral-klasse uden at ændre den.
+		/// </summary>
+		private void ShowAssignmentStrategies()
+		{
+			Console.Clear();
+
+			Console.ForegroundColor = ConsoleColor.Cyan;
+			Console.WriteLine("TILDELINGSSTRATEGIER\n");
+			Console.ResetColor();
+
+			Console.WriteLine("Samme tre ledige fanger og samme hændelse.");
+			Console.WriteLine("Kun strategien i constructoren skifter.");
+			Console.WriteLine("PrisonControlCenter er uændret.\n");
+
+			Console.WriteLine("Luna  (Escape Artist)  Power 70");
+			Console.WriteLine("Omar  (Hacker)         Power 60");
+			Console.WriteLine("Bo    (Strong)         Power 90\n");
+
+			PrisonControlCenter firstCenter = new PrisonControlCenter(
+				new FirstAvailablePrisonerStrategy());
+			PrisonControlCenter powerCenter = new PrisonControlCenter(
+				new HighestPowerPrisonerStrategy());
+
+			RegisterDemoPrisoners(firstCenter);
+			RegisterDemoPrisoners(powerCenter);
+
+			Incident incident = new Incident
+			{
+				Description = "Flugtforsøg i gården",
+				Location = "Gård",
+				Severity = Severity.High
+			};
+
+			Prisoner firstChoice = firstCenter.AssignPrisoner(incident);
+			Prisoner powerChoice = powerCenter.AssignPrisoner(incident);
+
+			Console.WriteLine(
+				$"Første ledige:  {firstChoice.Name} (Power {firstChoice.PowerLevel})");
+			Console.WriteLine(
+				$"Højest power:   {powerChoice.Name} (Power {powerChoice.PowerLevel})");
+
+			WaitForEscape();
+		}
+
+		private static void RegisterDemoPrisoners(PrisonControlCenter controlCenter)
+		{
+			controlCenter.RegisterPrisoner(new EscapeArtist(10, "Luna"));
+			controlCenter.RegisterPrisoner(new HackerPrisoner(11, "Omar"));
+			controlCenter.RegisterPrisoner(new StrongPrisoner(12, "Bo"));
 		}
 
 		private void WaitForEscape()

@@ -85,13 +85,18 @@ Flugten slutter med **DU ER FLYGTET!** eller **DU ER FANGET!**
 
 ## Dependency Inversion
 
-`PrisonControlCenter` afhænger af `IAssignmentStrategy` frem for en konkret strategi. Derfor kan `FirstAvailablePrisonerStrategy` senere udskiftes med en anden strategi uden at ændre selve `PrisonControlCenter`.
+`PrisonControlCenter` afhænger af `IAssignmentStrategy` frem for en konkret strategi. Derfor kan `FirstAvailablePrisonerStrategy` byttes med `HighestPowerPrisonerStrategy` uden at ændre selve `PrisonControlCenter`.
+
+Begge kører i menuen **Se tildelingsstrategier**: samme fanger og samme hændelse, men to forskellige constructor-injectioner.
 
 Strategien gives udefra med constructor injection i `Game`:
 
 ```csharp
 PrisonControlCenter controlCenter = new PrisonControlCenter(
     new FirstAvailablePrisonerStrategy());
+
+PrisonControlCenter powerCenter = new PrisonControlCenter(
+    new HighestPowerPrisonerStrategy());
 ```
 
 ## UML-diagram
@@ -193,7 +198,9 @@ classDiagram
         +SelectPrisoner()
     }
     class FirstAvailablePrisonerStrategy
+    class HighestPowerPrisonerStrategy
     FirstAvailablePrisonerStrategy ..|> IAssignmentStrategy
+    HighestPowerPrisonerStrategy ..|> IAssignmentStrategy
 
     PrisonControlCenter "1" o-- "*" Prisoner
     PrisonControlCenter "1" *-- "*" Incident
