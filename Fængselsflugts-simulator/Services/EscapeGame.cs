@@ -724,7 +724,7 @@ namespace Fængselsflugts_simulator.Services
 		}
 
 		/// <summary>
-		/// Registrerer flugtforsøget i kontrolcentralen og håndterer egne exceptions.
+		/// Registrerer flugtforsøget i kontrolcentralen, slår alarm og håndterer egne exceptions.
 		/// </summary>
 		private void NotifyControlCenterOfEscape()
 		{
@@ -735,11 +735,22 @@ namespace Fængselsflugts_simulator.Services
 
 			controlCenter.ReportIncident(escapeIncident);
 
+			alarmIncident = CreateIncident(
+				"Flugtalarm",
+				"Kontrolcentralen",
+				Severity.High);
+
+			controlCenter.RaiseAlarm(alarmIncident);
+
+			AlarmAnimation.Show("Kontrolcentralen har udløst alarm!");
+
 			Console.WriteLine();
 			Console.ForegroundColor = ConsoleColor.DarkYellow;
 			Console.WriteLine("KONTROLCENTRALEN");
 			Console.ResetColor();
 			Console.WriteLine("Ny hændelse registreret: Flugtforsøg i Celleblok A.");
+			Console.WriteLine("Ny hændelse registreret: Flugtalarm.");
+			Console.WriteLine("Vagterne er varslet, men hovedindgangen er endnu ikke spærret.");
 
 			try
 			{
@@ -838,6 +849,11 @@ namespace Fængselsflugts_simulator.Services
 			if (escapeIncident != null && !escapeIncident.IsResolved)
 			{
 				escapeIncident.Resolve();
+			}
+
+			if (alarmIncident != null && !alarmIncident.IsResolved)
+			{
+				alarmIncident.Resolve();
 			}
 		}
 

@@ -45,6 +45,14 @@ namespace Fængselsflugts_simulator.Services
 		}
 
 		/// <summary>
+		/// Udløser alarm, når en fange flygter. Hændelsen registreres i kontrolcentralen.
+		/// </summary>
+		public void RaiseAlarm(Incident incident)
+		{
+			ReportIncident(incident);
+		}
+
+		/// <summary>
 		/// Viser alle indmeldte hændelser i konsollen.
 		/// </summary>
 		public void ShowIncidents()

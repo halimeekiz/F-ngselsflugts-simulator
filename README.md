@@ -57,7 +57,8 @@ Typiske forhindringer:
 - Låst celledør og hovedport
 - Vagt i gården
 - Vagter og kameraer i vagtrummet
-- Alarmpanel i kontrolrummet
+- Kontrolcentralen slår alarm, når flugten begynder
+- Alarmpanel i kontrolrummet (spærrer hovedindgangen)
 - Tunge kasser på lageret
 
 Flugten slutter med **DU ER FLYGTET!** eller **DU ER FANGET!**
@@ -189,6 +190,7 @@ classDiagram
         -IAssignmentStrategy assignmentStrategy
         +RegisterPrisoner()
         +ReportIncident()
+        +RaiseAlarm()
         +AssignPrisoner()
         +GetUnresolvedIncidents()
     }

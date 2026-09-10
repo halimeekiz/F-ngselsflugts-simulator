@@ -8,7 +8,7 @@
 		/// <summary>
 		/// Afspiller alarm-animationen i konsollen.
 		/// </summary>
-		public static void Show()
+		public static void Show(string footer = "🚨 ALARMEN ER AKTIVERET! 🚨")
 		{
 			for (int i = 0; i < 4; i++)
 			{
@@ -30,7 +30,7 @@
 			}
 
 			Console.ForegroundColor = ConsoleColor.Red;
-			Console.WriteLine("🚨 ALARMEN ER AKTIVERET! 🚨");
+			Console.WriteLine(footer);
 			Console.ResetColor();
 		}
 	}
