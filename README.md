@@ -23,6 +23,19 @@ dotnet run
 
 Spillet kører i konsollen, ikke i en browser.
 
+## Ekstra på denne branch
+
+`master` er afleveringen (konsolspillet).
+
+Denne branch har derudover et Windows-spil-vindue i `Fængselsflugts-gui` med kort og 3D-agtigt rum. Det er **ikke** en del af konsol-afleveringen.
+
+```powershell
+cd Fængselsflugts-gui
+dotnet run
+```
+
+Eller dobbeltklik på `Fængselsflugts-gui\Start-spil.bat`.
+
 ## Sådan styres spillet
 
 | Tast | Handling |

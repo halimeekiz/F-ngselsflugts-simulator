@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWindowsForms>true</UseWindowsForms>
+    <RootNamespace>Fængselsflugts_simulator.Gui</RootNamespace>
+    <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Fængselsflugts-simulator\Models\**\*.cs" Link="Shared\Models\%(RecursiveDir)%(Filename)%(Extension)" />
+    <Compile Include="..\Fængselsflugts-simulator\Interfaces\**\*.cs" Link="Shared\Interfaces\%(RecursiveDir)%(Filename)%(Extension)" />
+    <Compile Include="..\Fængselsflugts-simulator\Enums\**\*.cs" Link="Shared\Enums\%(RecursiveDir)%(Filename)%(Extension)" />
+    <Compile Include="..\Fængselsflugts-simulator\Exeptions\**\*.cs" Link="Shared\Exceptions\%(RecursiveDir)%(Filename)%(Extension)" />
+    <Compile Include="..\Fængselsflugts-simulator\Strategies\**\*.cs" Link="Shared\Strategies\%(RecursiveDir)%(Filename)%(Extension)" />
+    <Compile Include="..\Fængselsflugts-simulator\Utilities\**\*.cs" Link="Shared\Utilities\%(RecursiveDir)%(Filename)%(Extension)" />
+    <Compile Include="..\Fængselsflugts-simulator\Services\PrisonControlCenter.cs" Link="Shared\Services\PrisonControlCenter.cs" />
+  </ItemGroup>
+
+</Project>
